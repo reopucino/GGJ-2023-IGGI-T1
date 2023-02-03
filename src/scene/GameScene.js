@@ -15,7 +15,49 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    this.add.image(150, 100, "down").setInteractive();
+    for (let c_index = 0; c_index < 2; c_index++) {
+      let container = this.createContainerRandom();
+      container.x = 133 * (c_index + 1);
+      container.y = 133;
+    }
+  }
+
+  createContainerType(numberType) {
+    let container = this.add.container(0, 0);
+    let array = [];
+    let size_x = 133;
+    let size_y = 399;
+    if (numberType == 0) {
+      let img1 = this.add.image(0, -133, "down");
+      let img2 = this.add.image(0, 0, "down");
+      let img3 = this.add.image(0, 133, "down");
+      array.push(img1, img2, img3);
+    } else if (numberType == 1) {
+      let img1 = this.add.image(0, -133, "down");
+      let img2 = this.add.image(0, 0, "down");
+      let img3 = this.add.image(0, 133, "down");
+      let img4 = this.add.image(-133, 133, "down");
+      size_x = 266;
+      array.push(img1, img2, img3, img4);
+    } else {
+      let img1 = this.add.image(0, -133, "down");
+      let img2 = this.add.image(0, 0, "down");
+      let img3 = this.add.image(0, 133, "down");
+      let img4 = this.add.image(133, 133, "down");
+      size_x = 266;
+      array.push(img1, img2, img3, img4);
+    }
+
+    container.add(array);
+    container.setSize(size_x, size_y);
+    container.setInteractive();
+    return container;
+  }
+
+  createContainerRandom() {
+    let random = Phaser.Math.Between(0, 2);
+    let container = this.createContainerType(random);
+    return container;
   }
 
   startDrag(pointer, targets) {
