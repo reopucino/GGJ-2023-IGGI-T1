@@ -16,6 +16,7 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.image("b_dr", "b_dr.png");
     this.load.image("b_ld", "b_ld.png");
     this.load.image("b_rd", "b_rd.png");
+    this.load.image("objfollow", "obj_follow.png");
   }
   create() {
     this.scene.start("game");

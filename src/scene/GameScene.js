@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { FollowCam } from "../objects/FollowCam";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -18,6 +19,18 @@ export default class GameScene extends Phaser.Scene {
 
     this.createUI();
     this.input.on("gameobjectdown", this.onClickButton, this);
+
+    //create objectfollow
+    this.objectToFollow = this.add.image(960, 360, "objfollow");
+    this.kameraBaru = new FollowCam(
+      0,
+      0,
+      this.game.config.width,
+      this.game.config.height,
+      this.objectToFollow,
+      this
+    );
+    this.kameraBaru.replaceMain();
   }
 
   createProps() {
@@ -179,6 +192,8 @@ export default class GameScene extends Phaser.Scene {
     root.setPosition(pos.x, pos.y);
     this.lastGridRoot.x = newGrid.x;
     this.lastGridRoot.y = newGrid.y;
+    this.objectToFollow.x = pos.x;
+    this.objectToFollow.y = pos.y;
   }
 
   onClickButton(pointer, gameObject, event) {
