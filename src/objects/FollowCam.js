@@ -4,7 +4,7 @@ class FollowCam extends Phaser.Cameras.Scene2D.Camera {
   constructor(x, y, width, height, objectToFollow, scene) {
     super(x, y, width, height);
     this.objectToFollow = objectToFollow;
-    this.startFollow(this.objectToFollow, true, 0.5, 0.5);
+    this.startFollow(this.objectToFollow, true, 0.1, 0.1);
     this.scene = scene;
   }
 

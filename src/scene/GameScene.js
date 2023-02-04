@@ -21,7 +21,7 @@ export default class GameScene extends Phaser.Scene {
     this.input.on("gameobjectdown", this.onClickButton, this);
 
     //create objectfollow
-    this.objectToFollow = this.add.image(960, 360, "objfollow");
+    this.objectToFollow = this.add.image(110 + 4 * 133, 3 * 133, "objfollow");
     this.kameraBaru = new FollowCam(
       0,
       0,
@@ -75,13 +75,13 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createUI() {
-    this.createButton(this.game.config.width - 180, 100, 0);
-    this.createButton(this.game.config.width - 330, 100, 1);
-    this.createButton(this.game.config.width - 480, 100, 2);
-    this.createButton(this.game.config.width - 630, 100, 3);
-    this.createButton(this.game.config.width - 780, 100, 4);
-    this.createButton(this.game.config.width - 930, 100, 5);
-    this.createButton(this.game.config.width - 1080, 100, 6);
+    this.createButton(this.game.config.width - 180, 100, 0).setScrollFactor(0);
+    this.createButton(this.game.config.width - 330, 100, 1).setScrollFactor(0);
+    this.createButton(this.game.config.width - 480, 100, 2).setScrollFactor(0);
+    this.createButton(this.game.config.width - 630, 100, 3).setScrollFactor(0);
+    this.createButton(this.game.config.width - 780, 100, 4).setScrollFactor(0);
+    this.createButton(this.game.config.width - 930, 100, 5).setScrollFactor(0);
+    this.createButton(this.game.config.width - 1080, 100, 6).setScrollFactor(0);
   }
 
   createButton(x, y, typeButton) {
