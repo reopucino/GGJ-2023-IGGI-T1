@@ -3,8 +3,9 @@ import GameScene from "./src/scene/GameScene";
 import PreloadScene from "./src/scene/PreloadScene";
 
 const config = {
-  width: 1280,
-  height: 720,
+  width: 720,
+  height: 1280,
+  pixelArt: true,
   type: Phaser.AUTO,
   scene: [PreloadScene, GameScene],
   scale: {

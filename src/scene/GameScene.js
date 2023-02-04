@@ -1,11 +1,43 @@
 import Phaser from "phaser";
 import { FollowCam } from "../objects/FollowCam";
+import { grid } from "../grid";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
     super("game");
   }
   create() {
+    const mouse = this.add.sprite(0, 0, "anim_mouse", 0).setOrigin(0);
+    this.anims.create({
+      key: "showMouse",
+      frames: this.anims.generateFrameNumbers("anim_mouse", { frames: [0, 1, 2, 3] }),
+      repeat: -1,
+      frameRate: 4,
+      //repeat: true,
+    });
+    mouse.play("showMouse");
+
+    const animsTermit = this.add.sprite(16, 0, "anim_termit").setOrigin(0);
+    this.anims.create({
+      key: "playTermit",
+      frames: this.anims.generateFrameNumbers("anim_termit", { frames: [0, 1, 2] }),
+      repeat: -1,
+      frameRate: 4,
+    });
+    animsTermit.play("playTermit");
+
+    //zoom camera
+    this.cameras.main.setZoom(4);
+    //this.cameras.main.x = 360;//refer to scroll
+    //this.cameras.main.y = 640;
+    this.cameras.main.scrollX = -360;
+    this.cameras.main.scrollY = -640;
+    //this.cameras.main.scrollY = 2;
+    //this.cameras.main.pan(0, 0);
+  }
+  update() {}
+
+  createOLD() {
     //create grid sample
     for (let i = 0; i < 9; i++) {
       for (let j = 0; j < 3; j++) {
@@ -35,6 +67,7 @@ export default class GameScene extends Phaser.Scene {
 
   createProps() {
     this.lastGridRoot = { x: 4, y: 0 };
+    //grid.bg.pus;
   }
 
   createStartPoint() {
