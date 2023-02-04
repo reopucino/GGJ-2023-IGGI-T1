@@ -3,10 +3,14 @@ import GameScene from "./src/scene/GameScene";
 import PreloadScene from "./src/scene/PreloadScene";
 
 const config = {
-  width: 540,
-  height: 960,
+  width: 1280,
+  height: 720,
   type: Phaser.AUTO,
   scene: [PreloadScene, GameScene],
+  scale: {
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    mode: Phaser.Scale.FIT,
+  },
 };
 
 const game = new Phaser.Game(config);
