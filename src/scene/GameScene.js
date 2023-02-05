@@ -30,19 +30,20 @@ export default class GameScene extends Phaser.Scene {
     animsTermit.play("playTermit");
 
     this.createStartPoint();
+
+    this.objectToFollow = this.add.sprite(16 * 11.5, 64, "anim_mouse", 0).setOrigin(0.5, 0);
+    this.kameraBaru = new FollowCam(
+      0,
+      0,
+      this.game.config.width,
+      this.game.config.height,
+      this.objectToFollow,
+      this
+    );
+    this.kameraBaru.replaceMain();
     //zoom camera
     //best zoom = 4
-    this.cameras.main.setZoom(4);
-    //width = 320
-    //height = xxx
-
-    //scrollcode
-    //this.cameras.main.x = 360;//refer to scroll
-    //this.cameras.main.y = 640;
-    this.cameras.main.scrollX = -270; //320
-    this.cameras.main.scrollY = -520; //640
-    //this.cameras.main.scrollY = 2;
-    //this.cameras.main.pan(128, 0);
+    this.kameraBaru.setZoom(1);
 
     this.createUI();
     //only spawn 3 uis
@@ -81,43 +82,15 @@ export default class GameScene extends Phaser.Scene {
     //var layer2 = map.createLayer(1, ties)
   }
 
-  createOLD() {
-    //create grid sample
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 3; j++) {
-        this.add.image(110 + i * 133, (j + 3) * 133, "white");
-      }
-    }
-
-    this.createProps();
-    //create startpoint on middle
-    this.createStartPoint();
-
-    this.createUI();
-    this.input.on("gameobjectdown", this.onClickButton, this);
-
-    //create objectfollow
-    this.objectToFollow = this.add.image(110 + 4 * 133, 3 * 133, "objfollow");
-    this.kameraBaru = new FollowCam(
-      0,
-      0,
-      this.game.config.width,
-      this.game.config.height,
-      this.objectToFollow,
-      this
-    );
-    this.kameraBaru.replaceMain();
-  }
-
   createProps() {
-    this.lastGridRoot = { x: 5, y: 1 };
+    this.lastGridRoot = { x: 11, y: 1 };
     this.lastContainerRoots = null;
     //grid.bg.pus;
   }
 
   createStartPoint() {
     //this.add.image(110 + 4 * 133, 3 * 133, "red");
-    this.lastContainerRoots = this.add.sprite(80, 64, "roots", 7).setOrigin(0, 0);
+    this.lastContainerRoots = this.add.sprite(176, 64, "roots", 7).setOrigin(0, 0);
   }
 
   //return point
@@ -170,10 +143,10 @@ export default class GameScene extends Phaser.Scene {
     //   var posy = 128;
     //   this.createButtonPixel(posx, 128, i);
     // }
-    this.createButtonPixel(32, 128, 3);
-    this.createButtonPixel(64, 128, 4);
-    this.createButtonPixel(96, 128, 5);
-    this.createButtonPixel(128, 128, 6);
+    var btn1 = this.createButtonPixel(36, 300, 3).setScrollFactor(0);
+    this.createButtonPixel(74, 300, 4).setScrollFactor(0);
+    this.createButtonPixel(116, 300, 5).setScrollFactor(0);
+    //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
   }
 
   createButtonPixel(x, y, typeButton) {
@@ -184,6 +157,8 @@ export default class GameScene extends Phaser.Scene {
     container.add(img);
     container.setSize(32, 32);
     container.setInteractive();
+    container.x = x;
+    container.y = y;
     return container;
   }
 
@@ -290,7 +265,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createCharacter() {
-    this.add.image(72, 16, "char").setOrigin(0, 0);
+    this.add.image(168, 16, "char").setOrigin(0, 0);
   }
 
   spawnRoots(gridX, gridY, typeObject) {
@@ -329,8 +304,8 @@ export default class GameScene extends Phaser.Scene {
     this.lastContainerRoots = root;
 
     //camera follow
-    // this.objectToFollow.x = pos.x;
-    // this.objectToFollow.y = pos.y;
+    this.objectToFollow.x = pos.x;
+    this.objectToFollow.y = pos.y;
   }
 
   onClickButton(pointer, gameObject, event) {
