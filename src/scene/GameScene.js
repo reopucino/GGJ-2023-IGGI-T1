@@ -121,8 +121,8 @@ export default class GameScene extends Phaser.Scene {
 
   //return point
   getPositionFromGrid(x, y) {
-    let _x = 110 + x * 133;
-    let _y = (y + 3) * 133;
+    let _x = x * 16;
+    let _y = 64 + y * 16; //start with 64
     return { x: _x, y: _y };
   }
 
@@ -292,10 +292,9 @@ export default class GameScene extends Phaser.Scene {
 
   spawnRoots(gridX, gridY, typeObject) {
     let root = this.createRootType(typeObject);
-    root.setPosition(80, 100);
-    //let pos = this.getPositionFromGrid(gridX, gridY);
+    let pos = this.getPositionFromGrid(gridX, gridY);
     // let newGrid = this.addGridBaseTypeRoot(gridX, gridY, typeObject);
-    // root.setPosition(pos.x, pos.y);
+    root.setPosition(pos.x, pos.y);
     // this.lastGridRoot.x = newGrid.x;
     // this.lastGridRoot.y = newGrid.y;
     // this.objectToFollow.x = pos.x;
