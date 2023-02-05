@@ -304,14 +304,34 @@ export default class GameScene extends Phaser.Scene {
     let typeObject = gameObject.data.get("typeobject");
     this.spawnRoots(this.lastGridRoot.x, this.lastGridRoot.y, typeObject);
 
+    //itterate group button data object
     //change the button rules
-    let random = Phaser.Math.Between(0, 6);
-    while (random == typeObject) {
+    let random = 0;
+    let arrayDataObject = this.getButtonsDataObject();
+    do {
       random = Phaser.Math.Between(0, 6);
-    }
+    } while (
+      random == arrayDataObject[0] ||
+      random == arrayDataObject[1] ||
+      random == arrayDataObject[2]
+    );
     gameObject.data.set("typeobject", random);
     let childObject = gameObject.getAt(0);
     childObject.setFrame(random);
+  }
+
+  /**
+   *
+   * @returns Array
+   */
+  getButtonsDataObject() {
+    let array = [];
+    this.groupButton.children.iterate(function (btn) {
+      let data = btn.data.get("typeobject");
+      array.push(data);
+    });
+
+    return array;
   }
 
   gameOver() {
