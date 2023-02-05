@@ -13,6 +13,8 @@ export default class GameScene extends Phaser.Scene {
     this.createCharacter();
     this.createStartPoint();
 
+    this.createGeneratorObsAndPowerup();
+
     this.objectToFollow = this.add
       .sprite(SETTINGS.WIDHT * 41.5, 64, "anim_mouse", 0)
       .setOrigin(0.5, 0);
@@ -87,7 +89,32 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createGeneratorObsAndPowerup() {
-    
+    //cheatobs
+    let array = [];
+
+    do {
+      let random = Phaser.Math.Between(0, 80);
+      if (this.passArrayCompare(array, random)) {
+        array.push(random);
+      }
+    } while (array.length < 4);
+    //console.log(array);
+
+    for (let i = 0; i < array.length; i++) {}
+  }
+
+  passArrayCompare(array, numberCompare) {
+    for (let i = 0; i < array.length; i++) {
+      let num = array[i];
+      if (this.spaceBetween(numberCompare, num) < 4) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  spaceBetween(a, b) {
+    return Math.abs(a - b);
   }
 
   //return point
