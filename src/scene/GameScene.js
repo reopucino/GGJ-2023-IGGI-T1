@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import { FollowCam } from "../objects/FollowCam";
 import GridInGame from "../grid";
+import { SETTINGS } from "../const";
 
 export default class GameScene extends Phaser.Scene {
   constructor() {
@@ -31,7 +32,9 @@ export default class GameScene extends Phaser.Scene {
 
     this.createStartPoint();
 
-    this.objectToFollow = this.add.sprite(16 * 11.5, 64, "anim_mouse", 0).setOrigin(0.5, 0);
+    this.objectToFollow = this.add
+      .sprite(SETTINGS.WIDHT * 41.5, 64, "anim_mouse", 0)
+      .setOrigin(0.5, 0);
     this.kameraBaru = new FollowCam(
       0,
       0,
@@ -54,9 +57,9 @@ export default class GameScene extends Phaser.Scene {
   update() {}
 
   createTileMap() {
-    this.bgSky = this.add.tileSprite(0, -96, 640, 160, "bg-fg", 18).setOrigin(0);
-    this.firstGround = this.add.tileSprite(0, 48, 640, 16, "bg-fg", 17).setOrigin(0);
-    this.floorGround = this.add.tileSprite(0, 64, 640, 1280, "bg-fg", 22).setOrigin(0);
+    this.bgSky = this.add.tileSprite(0, -96, 1280, 160, "bg-fg", 18).setOrigin(0);
+    this.firstGround = this.add.tileSprite(0, 48, 1280, 16, "bg-fg", 17).setOrigin(0);
+    this.floorGround = this.add.tileSprite(0, 64, 1280, 1280, "bg-fg", 22).setOrigin(0);
   }
 
   /**
@@ -90,14 +93,15 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createProps() {
-    this.lastGridRoot = { x: 11, y: 1 };
+    this.lastGridRoot = { x: 41, y: 1 };
     this.depth = 1;
     this.health = 100;
     this.lastContainerRoots = null;
   }
 
   createStartPoint() {
-    this.lastContainerRoots = this.add.sprite(176, 64, "roots", 7).setOrigin(0, 0);
+    const POS_GRID_X = 41 * SETTINGS.WIDHT;
+    this.lastContainerRoots = this.add.sprite(POS_GRID_X, 64, "roots", 7).setOrigin(0, 0);
   }
 
   //return point
@@ -136,10 +140,12 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createUI() {
-    this.createButtonPixel(36, 300, 3).setScrollFactor(0);
-    this.createButtonPixel(74, 300, 4).setScrollFactor(0);
-    this.createButtonPixel(116, 300, 2).setScrollFactor(0);
+    let btn1 = this.createButtonPixel(36, 300, 3).setScrollFactor(0);
+    let btn2 = this.createButtonPixel(74, 300, 0).setScrollFactor(0);
+    let btn3 = this.createButtonPixel(116, 300, 6).setScrollFactor(0);
     //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
+
+    this.groupButton = this.add.group([btn1, btn2, btn3]);
 
     //create text UI
     let currentHealth = "health : " + this.health;
@@ -227,14 +233,18 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createCharacter() {
-    this.add.image(168, 16, "char").setOrigin(0, 0);
+    const posGridChar = 40 * SETTINGS.WIDHT + 8;
+    this.add.image(posGridChar, 16, "char").setOrigin(0, 0);
   }
 
   spawnRoots(gridX, gridY, typeObject) {
     let root = this.createRootType(typeObject);
+    console.log(gridX);
     let pos = this.getPositionFromGrid(gridX, gridY);
     let newGrid = this.addGridBaseTypeRoot(gridX, gridY, typeObject);
     root.setPosition(pos.x, pos.y);
+    if (newGrid.x < 0) newGrid.x = 0;
+    else if (newGrid.x > 79) newGrid.x = 79;
     this.lastGridRoot.x = newGrid.x;
     this.lastGridRoot.y = newGrid.y;
     this.depth = this.lastGridRoot.y;
@@ -298,5 +308,10 @@ export default class GameScene extends Phaser.Scene {
   gameOver() {
     //hide UI just show text gameover and button restart
     this.add.text(90, 120, "GAME OVER").setScrollFactor(0).setOrigin(0.5);
+
+    //disable button
+    this.groupButton.children.iterate(function (btn) {
+      btn.disableInteractive();
+    });
   }
 }
