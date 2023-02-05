@@ -130,23 +130,25 @@ export default class GameScene extends Phaser.Scene {
     var _x = x;
     var _y = y;
     if (typeobject == 0) {
-      _y += 2;
+      _y += 3;
     } else if (typeobject == 1) {
-      _x += -1;
-      _y += 2;
+      _x += 1;
+      _y += 3;
     } else if (typeobject == 2) {
       _x += 1;
-      _y += 2;
+      _y += 3;
     } else if (typeobject == 3) {
-      _x += -1;
-      _y += 2;
-    } else if (typeobject == 4) {
-      _x += 1;
-      _y += 2;
-    } else if (typeobject == 5) {
-      _x += 2;
-    } else {
       _x += -2;
+      _y += 1;
+    } else if (typeobject == 4) {
+      _x += -1;
+      _y += 3;
+    } else if (typeobject == 5) {
+      _x += -1;
+      _y += 3;
+    } else {
+      _x += 2;
+      _y += 1;
     }
 
     return { x: _x, y: _y };
@@ -293,10 +295,10 @@ export default class GameScene extends Phaser.Scene {
   spawnRoots(gridX, gridY, typeObject) {
     let root = this.createRootType(typeObject);
     let pos = this.getPositionFromGrid(gridX, gridY);
-    // let newGrid = this.addGridBaseTypeRoot(gridX, gridY, typeObject);
+    let newGrid = this.addGridBaseTypeRoot(gridX, gridY, typeObject);
     root.setPosition(pos.x, pos.y);
-    // this.lastGridRoot.x = newGrid.x;
-    // this.lastGridRoot.y = newGrid.y;
+    this.lastGridRoot.x = newGrid.x;
+    this.lastGridRoot.y = newGrid.y;
     // this.objectToFollow.x = pos.x;
     // this.objectToFollow.y = pos.y;
   }
