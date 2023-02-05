@@ -11,25 +11,6 @@ export default class GameScene extends Phaser.Scene {
     this.createProps();
     this.createTileMap();
     this.createCharacter();
-    const mouse = this.add.sprite(0, 0, "anim_mouse", 0).setOrigin(0);
-    this.anims.create({
-      key: "showMouse",
-      frames: this.anims.generateFrameNumbers("anim_mouse", { frames: [0, 1, 2, 3] }),
-      repeat: -1,
-      frameRate: 4,
-      //repeat: true,
-    });
-    mouse.play("showMouse");
-
-    const animsTermit = this.add.sprite(16, 0, "anim_termit").setOrigin(0);
-    this.anims.create({
-      key: "playTermit",
-      frames: this.anims.generateFrameNumbers("anim_termit", { frames: [0, 1, 2] }),
-      repeat: -1,
-      frameRate: 4,
-    });
-    animsTermit.play("playTermit");
-
     this.createStartPoint();
 
     this.objectToFollow = this.add
@@ -103,6 +84,10 @@ export default class GameScene extends Phaser.Scene {
   createStartPoint() {
     const POS_GRID_X = 41 * SETTINGS.WIDHT;
     this.lastContainerRoots = this.add.sprite(POS_GRID_X, 64, "roots", 7).setOrigin(0, 0);
+  }
+
+  createGeneratorObsAndPowerup() {
+    
   }
 
   //return point
@@ -344,7 +329,36 @@ export default class GameScene extends Phaser.Scene {
     //disable button
     this.groupButton.children.iterate(function (btn) {
       btn.disableInteractive();
+      btn.visible = false;
     });
     this.sound.play("gameover");
+
+    //this.input.on("pointerdown", this.restartGame, this);
+  }
+
+  restartGame() {
+    this.input.off("pointerdown", this.restartGame, this);
+    this.scene.restart();
+  }
+
+  testanimationandsprite() {
+    const mouse = this.add.sprite(0, 0, "anim_mouse", 0).setOrigin(0);
+    this.anims.create({
+      key: "showMouse",
+      frames: this.anims.generateFrameNumbers("anim_mouse", { frames: [0, 1, 2, 3] }),
+      repeat: -1,
+      frameRate: 4,
+      //repeat: true,
+    });
+    mouse.play("showMouse");
+
+    const animsTermit = this.add.sprite(16, 0, "anim_termit").setOrigin(0);
+    this.anims.create({
+      key: "playTermit",
+      frames: this.anims.generateFrameNumbers("anim_termit", { frames: [0, 1, 2] }),
+      repeat: -1,
+      frameRate: 4,
+    });
+    animsTermit.play("playTermit");
   }
 }
