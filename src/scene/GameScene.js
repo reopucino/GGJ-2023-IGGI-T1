@@ -140,18 +140,18 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createUI() {
-    let btn1 = this.createButtonPixel(36, 300, 3).setScrollFactor(0);
-    let btn2 = this.createButtonPixel(74, 300, 0).setScrollFactor(0);
-    let btn3 = this.createButtonPixel(116, 300, 6).setScrollFactor(0);
+    let btn1 = this.createButtonPixel(55, 280, 3).setScrollFactor(0);
+    let btn2 = this.createButtonPixel(90, 280, 0).setScrollFactor(0);
+    let btn3 = this.createButtonPixel(125, 280, 6).setScrollFactor(0);
     //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
 
     this.groupButton = this.add.group([btn1, btn2, btn3]);
 
     //create text UI
-    let currentHealth = "health : " + this.health;
+    let currentHealth = "life energy : " + this.health;
     this.textHealth = this.add.text(0, 0, currentHealth).setScrollFactor(0).setDepth(1);
 
-    let deep = "depth : " + this.depth;
+    let deep = "depth : " + this.depth + " m";
     this.textDepth = this.add.text(0, 16, deep).setScrollFactor(0).setDepth(1);
   }
 
@@ -239,7 +239,6 @@ export default class GameScene extends Phaser.Scene {
 
   spawnRoots(gridX, gridY, typeObject) {
     let root = this.createRootType(typeObject);
-    console.log(gridX);
     let pos = this.getPositionFromGrid(gridX, gridY);
     let newGrid = this.addGridBaseTypeRoot(gridX, gridY, typeObject);
     root.setPosition(pos.x, pos.y);
@@ -289,10 +288,10 @@ export default class GameScene extends Phaser.Scene {
     this.objectToFollow.y = pos.y;
 
     //update the text
-    let deep = "depth : " + this.depth;
+    let deep = "depth : " + this.depth + " m";
     this.textDepth.setText(deep);
 
-    let currentHealth = "health : " + this.health;
+    let currentHealth = "life energy : " + this.health;
     this.textHealth.setText(currentHealth);
 
     if (this.health < 0) {

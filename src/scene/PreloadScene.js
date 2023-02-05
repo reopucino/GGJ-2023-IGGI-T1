@@ -5,18 +5,6 @@ export default class PreloadScene extends Phaser.Scene {
     super("preload");
   }
   preload() {
-    this.load.image("down", "down.png");
-    this.load.image("red", "red.png");
-    this.load.image("white", "white.png");
-    this.load.image("basic-button", "button_b.png");
-    this.load.image("b_d", "b_d.png");
-    this.load.image("b_l", "b_l.png");
-    this.load.image("b_r", "b_r.png");
-    this.load.image("b_dl", "b_dl.png");
-    this.load.image("b_dr", "b_dr.png");
-    this.load.image("b_ld", "b_ld.png");
-    this.load.image("b_rd", "b_rd.png");
-    this.load.image("objfollow", "obj_follow.png");
     //this.load.image
     //real assets
     this.load.spritesheet("anim_mouse", "anim_mouse.png", { frameWidth: 16, frameHeight: 16 });
@@ -26,6 +14,15 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet("ui-direction", "ui-direction.png", { frameWidth: 32, frameHeight: 32 });
     this.load.spritesheet("bg-fg", "bg-fg.png", { frameWidth: 16, frameHeight: 16 });
     this.load.image("background", "background.png");
+
+    //audio
+    this.load.audio("bgm", "./sounds/bgm.mp3");
+    this.load.audio("gameover", "./sounds/gameover.mp3");
+    this.load.audio("hit", "./sounds/hit.mp3");
+    this.load.audio("placement", "./sounds/placement.mp3");
+    this.load.audio("stone", "./sounds/stone3.mp3");
+    this.load.audio("mouse", "./sounds/tikus1.mp3");
+    this.load.audio("water", "./sounds/water1.mp3");
   }
   create() {
     this.scene.start("game");
