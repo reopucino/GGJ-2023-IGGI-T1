@@ -111,12 +111,13 @@ export default class GameScene extends Phaser.Scene {
 
   createProps() {
     this.lastGridRoot = { x: 5, y: 1 };
+    this.lastContainerRoots = null;
     //grid.bg.pus;
   }
 
   createStartPoint() {
     //this.add.image(110 + 4 * 133, 3 * 133, "red");
-    this.add.sprite(80, 64, "roots", 7).setOrigin(0, 0);
+    this.lastContainerRoots = this.add.sprite(80, 64, "roots", 7).setOrigin(0, 0);
   }
 
   //return point
@@ -299,6 +300,35 @@ export default class GameScene extends Phaser.Scene {
     root.setPosition(pos.x, pos.y);
     this.lastGridRoot.x = newGrid.x;
     this.lastGridRoot.y = newGrid.y;
+
+    //change image to link with other roots
+    let typeLastObject = this.lastContainerRoots;
+    if (typeLastObject.type == "Sprite") {
+      this.lastContainerRoots.setFrame(4);
+    } else {
+      let LastContainerGameObject = this.lastContainerRoots.last;
+      //NEED TO FIX
+      LastContainerGameObject.setFrame(4);
+    }
+    //change first root to linking
+    let firstChildContainer = root.getAt(0);
+    let moveCondition = "";
+    if (typeObject == 0 || typeObject == 2 || typeObject == 5) {
+      moveCondition = "down";
+    } else if (typeObject == 1 || typeObject == 6) {
+      moveCondition = "right";
+    } else {
+      moveCondition = "left";
+    }
+    if (moveCondition == "right") {
+      firstChildContainer.setFrame(3);
+    } else if (moveCondition == "left") {
+      firstChildContainer.setFrame(5);
+    }
+    //change last container root
+    this.lastContainerRoots = root;
+
+    //camera follow
     // this.objectToFollow.x = pos.x;
     // this.objectToFollow.y = pos.y;
   }
