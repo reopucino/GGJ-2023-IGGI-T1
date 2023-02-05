@@ -35,6 +35,7 @@ export default class GameScene extends Phaser.Scene {
     this.objectToFollow = this.add
       .sprite(SETTINGS.WIDHT * 41.5, 64, "anim_mouse", 0)
       .setOrigin(0.5, 0);
+    this.objectToFollow.visible = false;
     this.kameraBaru = new FollowCam(
       0,
       0,
@@ -297,6 +298,9 @@ export default class GameScene extends Phaser.Scene {
     if (this.health < 0) {
       this.gameOver();
     }
+
+    //play placement
+    this.sound.play("placement");
   }
 
   onClickButton(pointer, gameObject, event) {
@@ -341,5 +345,6 @@ export default class GameScene extends Phaser.Scene {
     this.groupButton.children.iterate(function (btn) {
       btn.disableInteractive();
     });
+    this.sound.play("gameover");
   }
 }

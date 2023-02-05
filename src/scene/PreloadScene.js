@@ -26,5 +26,6 @@ export default class PreloadScene extends Phaser.Scene {
   }
   create() {
     this.scene.start("game");
+    this.sound.add("bgm").play({ loop: true });
   }
 }
