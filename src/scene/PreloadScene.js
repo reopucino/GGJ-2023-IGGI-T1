@@ -21,8 +21,9 @@ export default class PreloadScene extends Phaser.Scene {
     //real assets
     this.load.spritesheet("anim_mouse", "anim_mouse.png", { frameWidth: 16, frameHeight: 16 });
     this.load.spritesheet("anim_termit", "anim_termit.png", { frameWidth: 48, frameHeight: 16 });
+    this.load.spritesheet("roots", "roots.png", { frameWidth: 16, frameHeight: 16 });
     this.load.image("char", "character.png");
-    this.load.image("ui-direction", "ui-direction.png");
+    this.load.spritesheet("ui-direction", "ui-direction.png", { frameWidth: 32, frameHeight: 32 });
     this.load.image("bg-fg", "bg-fg.png");
   }
   create() {
