@@ -143,7 +143,7 @@ export default class GameScene extends Phaser.Scene {
 
     //create text UI
     let currentHealth = "health : " + this.health;
-    this.textHelath = this.add.text(0, 0, currentHealth).setScrollFactor(0).setDepth(1);
+    this.textHealth = this.add.text(0, 0, currentHealth).setScrollFactor(0).setDepth(1);
 
     let deep = "depth : " + this.depth;
     this.textDepth = this.add.text(0, 16, deep).setScrollFactor(0).setDepth(1);
@@ -283,11 +283,20 @@ export default class GameScene extends Phaser.Scene {
     this.textDepth.setText(deep);
 
     let currentHealth = "health : " + this.health;
-    this.textHelath.setText(currentHealth);
+    this.textHealth.setText(currentHealth);
+
+    if (this.health < 0) {
+      this.gameOver();
+    }
   }
 
   onClickButton(pointer, gameObject, event) {
     let typeObject = gameObject.data.get("typeobject");
     this.spawnRoots(this.lastGridRoot.x, this.lastGridRoot.y, typeObject);
+  }
+
+  gameOver() {
+    //hide UI just show text gameover and button restart
+    this.add.text(90, 120, "GAME OVER").setScrollFactor(0).setOrigin(0.5);
   }
 }
