@@ -303,6 +303,15 @@ export default class GameScene extends Phaser.Scene {
   onClickButton(pointer, gameObject, event) {
     let typeObject = gameObject.data.get("typeobject");
     this.spawnRoots(this.lastGridRoot.x, this.lastGridRoot.y, typeObject);
+
+    //change the button rules
+    let random = Phaser.Math.Between(0, 6);
+    while (random == typeObject) {
+      random = Phaser.Math.Between(0, 6);
+    }
+    gameObject.data.set("typeobject", random);
+    let childObject = gameObject.getAt(0);
+    childObject.setFrame(random);
   }
 
   gameOver() {
