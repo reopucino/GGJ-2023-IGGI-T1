@@ -24,7 +24,8 @@ export default class PreloadScene extends Phaser.Scene {
     this.load.spritesheet("roots", "roots.png", { frameWidth: 16, frameHeight: 16 });
     this.load.image("char", "character.png");
     this.load.spritesheet("ui-direction", "ui-direction.png", { frameWidth: 32, frameHeight: 32 });
-    this.load.image("bg-fg", "bg-fg.png");
+    this.load.spritesheet("bg-fg", "bg-fg.png", { frameWidth: 16, frameHeight: 16 });
+    this.load.image("background", "background.png");
   }
   create() {
     this.scene.start("game");

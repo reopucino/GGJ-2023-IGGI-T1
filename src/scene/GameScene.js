@@ -54,7 +54,16 @@ export default class GameScene extends Phaser.Scene {
   update() {}
 
   createTileMap() {
-    this.grid = new GridInGame();
+    this.bgSky = this.add.tileSprite(0, -96, 640, 160, "bg-fg", 18).setOrigin(0);
+    this.firstGround = this.add.tileSprite(0, 48, 640, 16, "bg-fg", 17).setOrigin(0);
+    this.floorGround = this.add.tileSprite(0, 64, 640, 1280, "bg-fg", 22).setOrigin(0);
+  }
+
+  /**
+   * not use for now, maybe for next update??
+   */
+  createMapUsingGrid() {
+    this.grid = new GridInGame(); //for next update
     let levelEmpty = [
       18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18, 18,
     ];
@@ -75,21 +84,19 @@ export default class GameScene extends Phaser.Scene {
     for (let index = 0; index < 20; index++) {
       this.grid.bg.push(dirtroots);
     }
-
     var map = this.make.tilemap({ data: this.grid.bg, tileWidth: 16, tileHeight: 16 });
     var tiles = map.addTilesetImage("bg-fg");
     var layer = map.createLayer(0, tiles, 0, 0);
-    //var layer2 = map.createLayer(1, ties)
   }
 
   createProps() {
     this.lastGridRoot = { x: 11, y: 1 };
+    this.depth = 1;
+    this.health = 100;
     this.lastContainerRoots = null;
-    //grid.bg.pus;
   }
 
   createStartPoint() {
-    //this.add.image(110 + 4 * 133, 3 * 133, "red");
     this.lastContainerRoots = this.add.sprite(176, 64, "roots", 7).setOrigin(0, 0);
   }
 
@@ -107,19 +114,19 @@ export default class GameScene extends Phaser.Scene {
       _y += 3;
     } else if (typeobject == 1) {
       _x += 1;
-      _y += 3;
+      _y += 3; //should be 2
     } else if (typeobject == 2) {
       _x += 1;
-      _y += 3;
+      _y += 3; //should be 2
     } else if (typeobject == 3) {
       _x += -2;
       _y += 1;
     } else if (typeobject == 4) {
       _x += -1;
-      _y += 3;
+      _y += 3; //should be 2
     } else if (typeobject == 5) {
       _x += -1;
-      _y += 3;
+      _y += 3; //should be 2
     } else {
       _x += 2;
       _y += 1;
@@ -133,6 +140,13 @@ export default class GameScene extends Phaser.Scene {
     this.createButtonPixel(74, 300, 4).setScrollFactor(0);
     this.createButtonPixel(116, 300, 2).setScrollFactor(0);
     //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
+
+    //create text UI
+    let currentHealth = "health : " + this.health;
+    this.textHelath = this.add.text(0, 0, currentHealth).setScrollFactor(0).setDepth(1);
+
+    let deep = "depth : " + this.depth;
+    this.textDepth = this.add.text(0, 16, deep).setScrollFactor(0).setDepth(1);
   }
 
   createButtonPixel(x, y, typeButton) {
@@ -153,6 +167,9 @@ export default class GameScene extends Phaser.Scene {
     let array = [];
     let sizeX = 16;
     let sizeY = 16;
+
+    container.setDataEnabled();
+
     // let size_x = 133;
     // let size_y = 399;
     if (numberType == 0) {
@@ -195,10 +212,11 @@ export default class GameScene extends Phaser.Scene {
       let img3 = this.add.sprite(sizeX * 2, 0, "roots", 6).setOrigin(0);
       array.push(img1, img2, img3);
     }
+    let healthReduce =
+      numberType == 1 || numberType == 2 || numberType == 4 || numberType == 5 ? 4 : 3;
+    container.data.set("reduce-health", healthReduce);
 
     container.add(array);
-    //container.setSize(size_x, size_y);
-    //container.setInteractive();
     return container;
   }
 
@@ -219,6 +237,10 @@ export default class GameScene extends Phaser.Scene {
     root.setPosition(pos.x, pos.y);
     this.lastGridRoot.x = newGrid.x;
     this.lastGridRoot.y = newGrid.y;
+    this.depth = this.lastGridRoot.y;
+    var reduceHealth = root.data.get("reduce-health");
+
+    this.health -= reduceHealth;
 
     //change image to link with other roots
     let typeLastObject = this.lastContainerRoots;
@@ -255,6 +277,13 @@ export default class GameScene extends Phaser.Scene {
     //camera follow
     this.objectToFollow.x = pos.x;
     this.objectToFollow.y = pos.y;
+
+    //update the text
+    let deep = "depth : " + this.depth;
+    this.textDepth.setText(deep);
+
+    let currentHealth = "health : " + this.health;
+    this.textHelath.setText(currentHealth);
   }
 
   onClickButton(pointer, gameObject, event) {
