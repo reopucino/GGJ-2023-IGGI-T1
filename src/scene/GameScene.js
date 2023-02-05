@@ -13,7 +13,11 @@ export default class GameScene extends Phaser.Scene {
     this.createCharacter();
     this.createStartPoint();
 
-    this.createGeneratorObsAndPowerup();
+    this.createAnimation();
+
+    this.spawnObsAndPowerup(4);
+    this.spawnObsAndPowerup(8);
+    //this.testingTileSprite();
 
     this.objectToFollow = this.add
       .sprite(SETTINGS.WIDHT * 41.5, 64, "anim_mouse", 0)
@@ -81,6 +85,7 @@ export default class GameScene extends Phaser.Scene {
     this.depth = 1;
     this.health = 100;
     this.lastContainerRoots = null;
+    this.currentGridSpawnGenerator = 8;
   }
 
   createStartPoint() {
@@ -88,7 +93,24 @@ export default class GameScene extends Phaser.Scene {
     this.lastContainerRoots = this.add.sprite(POS_GRID_X, 64, "roots", 7).setOrigin(0, 0);
   }
 
-  createGeneratorObsAndPowerup() {
+  createAnimation() {
+    this.anims.create({
+      key: "showMouse",
+      frames: this.anims.generateFrameNumbers("anim_mouse", { frames: [0, 1, 2, 3] }),
+      repeat: -1,
+      frameRate: 6,
+      //repeat: true,
+    });
+
+    this.anims.create({
+      key: "playTermit",
+      frames: this.anims.generateFrameNumbers("anim_termit", { frames: [0, 1, 2] }),
+      repeat: -1,
+      frameRate: 5,
+    });
+  }
+
+  spawnObsAndPowerup(addition_grid_y) {
     //cheatobs
     let array = [];
 
@@ -99,8 +121,57 @@ export default class GameScene extends Phaser.Scene {
       }
     } while (array.length < 4);
     //console.log(array);
-
-    for (let i = 0; i < array.length; i++) {}
+    let grid_y = 7 + addition_grid_y;
+    for (let i = 0; i < array.length; i++) {
+      let grid_x = array[i];
+      let texture = i == 0 ? "anim_mouse" : "anim_termit";
+      if (i < 2) {
+        let obj = this.add
+          .sprite(grid_x * SETTINGS.WIDHT, grid_y * SETTINGS.HEIGHT, texture, 0)
+          .setOrigin(0);
+        let animationName = i == 0 ? "showMouse" : "playTermit";
+        obj.play(animationName);
+      } else {
+        if (i == 3) {
+          this.add
+            .tileSprite(
+              grid_x * SETTINGS.WIDHT,
+              grid_y * SETTINGS.HEIGHT,
+              SETTINGS.WIDHT,
+              SETTINGS.HEIGHT,
+              "bg-fg",
+              5
+            )
+            .setOrigin(0)
+            .setDepth(0);
+        } else {
+          let random = Phaser.Math.Between(0, 3);
+          let widthTile = SETTINGS.WIDHT;
+          let heightTile = SETTINGS.HEIGHT;
+          let frameTexture = 0;
+          if (random == 1) {
+            widthTile = 2 * SETTINGS.WIDHT;
+            heightTile = 2 * SETTINGS.HEIGHT;
+            //frameTexture = 1;
+          } else if (random == 2 || random == 3) {
+            widthTile = 2 * SETTINGS.WIDHT;
+            //frameTexture = Phaser.Utils.Array.GetRandom([3, 8]);
+          }
+          this.add
+            .tileSprite(
+              grid_x * SETTINGS.WIDHT,
+              grid_y * SETTINGS.HEIGHT,
+              widthTile,
+              heightTile,
+              "bg-fg",
+              frameTexture
+            )
+            .setOrigin(0)
+            .setDepth(0);
+        }
+      }
+      grid_y++;
+    }
   }
 
   passArrayCompare(array, numberCompare) {
@@ -153,9 +224,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createUI() {
-    let btn1 = this.createButtonPixel(55, 280, 3).setScrollFactor(0);
-    let btn2 = this.createButtonPixel(90, 280, 0).setScrollFactor(0);
-    let btn3 = this.createButtonPixel(125, 280, 6).setScrollFactor(0);
+    let btn1 = this.createButtonPixel(55, 280, 3).setScrollFactor(0).setDepth(1);
+    let btn2 = this.createButtonPixel(90, 280, 0).setScrollFactor(0).setDepth(1);
+    let btn3 = this.createButtonPixel(125, 280, 6).setScrollFactor(0).setDepth(1);
     //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
 
     this.groupButton = this.add.group([btn1, btn2, btn3]);
@@ -333,6 +404,9 @@ export default class GameScene extends Phaser.Scene {
     gameObject.data.set("typeobject", random);
     let childObject = gameObject.getAt(0);
     childObject.setFrame(random);
+
+    this.currentGridSpawnGenerator += 4;
+    this.spawnObsAndPowerup(this.currentGridSpawnGenerator);
   }
 
   /**
@@ -387,5 +461,8 @@ export default class GameScene extends Phaser.Scene {
       frameRate: 4,
     });
     animsTermit.play("playTermit");
+  }
+  testingTileSprite() {
+    this.add.tileSprite(42 * SETTINGS.WIDHT, 7 * SETTINGS.HEIGHT, 32, 32, "bg-fg");
   }
 }

@@ -1,6 +1,6 @@
 import { Grid, GridSquare } from "../objects/GridSquareObject";
 import { FollowCam } from "../objects/FollowCam";
-import { Obstacle, ProcGen } from "ProcGen";
+import { Obstacle, ProcGen } from "../ProcGen";
 
 export class TestScene extends Phaser.Scene {
   constructor() {
@@ -10,9 +10,9 @@ export class TestScene extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("tree", "../../assets/tree.png");
-    this.load.image("grid_empty", "../../assets/grid_empty.png");
-    this.load.image("grid_filled", "../../assets/grid_filled.png");
+    //this.load.image("tree", "../../assets/tree.png");
+    this.load.image("grid_empty", "empty.png");
+    this.load.image("grid_filled", "fill.png");
   }
 
   create() {
@@ -24,7 +24,7 @@ export class TestScene extends Phaser.Scene {
     this.procGen = new ProcGen(this.grid);
     this.bigRock = new Obstacle(2, 2, 5);
 
-    this.tree = this.add.image(400, 128, "tree");
+    //this.tree = this.add.image(400, 128, "tree");
     this.target = this.add.image(500, 200, "grid_filled");
     this.key = this.input.keyboard.createCursorKeys();
 
