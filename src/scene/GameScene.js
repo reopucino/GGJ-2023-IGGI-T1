@@ -129,23 +129,9 @@ export default class GameScene extends Phaser.Scene {
   }
 
   createUI() {
-    // this.createButton(this.game.config.width - 180, 100, 0).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 330, 100, 1).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 480, 100, 2).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 630, 100, 3).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 780, 100, 4).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 930, 100, 5).setScrollFactor(0);
-    // this.createButton(this.game.config.width - 1080, 100, 6).setScrollFactor(0);
-
-    // const jarak = 36; // 32 ukurun size + 4 constanta space
-    // for (let i = 0; i < 7; i++) {
-    //   var posx = (i + 1) * jarak;
-    //   var posy = 128;
-    //   this.createButtonPixel(posx, 128, i);
-    // }
-    var btn1 = this.createButtonPixel(36, 300, 3).setScrollFactor(0);
+    this.createButtonPixel(36, 300, 3).setScrollFactor(0);
     this.createButtonPixel(74, 300, 4).setScrollFactor(0);
-    this.createButtonPixel(116, 300, 5).setScrollFactor(0);
+    this.createButtonPixel(116, 300, 2).setScrollFactor(0);
     //this.createButtonPixel(128, 128, 6).setScrollFactor(0);
   }
 
@@ -156,47 +142,6 @@ export default class GameScene extends Phaser.Scene {
     let img = this.add.sprite(0, 0, "ui-direction", typeButton);
     container.add(img);
     container.setSize(32, 32);
-    container.setInteractive();
-    container.x = x;
-    container.y = y;
-    return container;
-  }
-
-  createButton(x, y, typeButton) {
-    let container = this.add.container(0, 0);
-    let img = this.add.image(0, 0, "basic-button");
-    container.add(img);
-    container.setDataEnabled();
-    if (typeButton == 0) {
-      let imgd = this.add.image(0, 0, "b_d");
-      container.data.set("typeobject", 0);
-      container.add(imgd);
-    } else if (typeButton == 1) {
-      let imgd = this.add.image(0, 0, "b_dl");
-      container.data.set("typeobject", 1);
-      container.add(imgd);
-    } else if (typeButton == 2) {
-      let imgd = this.add.image(0, 0, "b_dr");
-      container.data.set("typeobject", 2);
-      container.add(imgd);
-    } else if (typeButton == 3) {
-      let imgd = this.add.image(0, 0, "b_ld");
-      container.data.set("typeobject", 3);
-      container.add(imgd);
-    } else if (typeButton == 4) {
-      let imgd = this.add.image(0, 0, "b_rd");
-      container.data.set("typeobject", 4);
-      container.add(imgd);
-    } else if (typeButton == 5) {
-      let imgd = this.add.image(0, 0, "b_r");
-      container.data.set("typeobject", 5);
-      container.add(imgd);
-    } else {
-      let imgd = this.add.image(0, 0, "b_l");
-      container.data.set("typeobject", 6);
-      container.add(imgd);
-    }
-    container.setSize(img.width, img.height);
     container.setInteractive();
     container.x = x;
     container.y = y;
@@ -214,7 +159,6 @@ export default class GameScene extends Phaser.Scene {
       let img1 = this.add.sprite(0, 0, "roots", 4).setOrigin(0);
       let img2 = this.add.sprite(0, sizeY * 1, "roots", 4).setOrigin(0);
       let img3 = this.add.sprite(0, sizeY * 2, "roots", 7).setOrigin(0);
-      console.log("spawn thi");
       array.push(img1, img2, img3);
     } else if (numberType == 1) {
       let img1 = this.add.sprite(0, 0, "roots", 1).setOrigin(0);
@@ -282,8 +226,13 @@ export default class GameScene extends Phaser.Scene {
       this.lastContainerRoots.setFrame(4);
     } else {
       let LastContainerGameObject = this.lastContainerRoots.last;
-      //NEED TO FIX
-      LastContainerGameObject.setFrame(4);
+      if (LastContainerGameObject.frame.name == "8") {
+        LastContainerGameObject.setFrame(0);
+      } else if (LastContainerGameObject.frame.name == "6") {
+        LastContainerGameObject.setFrame(2);
+      } else {
+        LastContainerGameObject.setFrame(4);
+      }
     }
     //change first root to linking
     let firstChildContainer = root.getAt(0);
@@ -309,27 +258,7 @@ export default class GameScene extends Phaser.Scene {
   }
 
   onClickButton(pointer, gameObject, event) {
-    console.log(gameObject.data.get("typeobject"));
     let typeObject = gameObject.data.get("typeobject");
     this.spawnRoots(this.lastGridRoot.x, this.lastGridRoot.y, typeObject);
-  }
-
-  startDrag(pointer, targets) {
-    this.input.off("pointerroots", this.startDrag, this);
-    this.dragObject = targets[0];
-    this.input.on("pointermove", this.doDrag, this);
-    this.input.on("pointerup", this.stopDrag, this);
-  }
-
-  doDrag(pointer) {
-    if (this.dragObject == null || this.dragObject == undefined) return;
-    this.dragObject.x = pointer.x;
-    this.dragObject.y = pointer.y;
-  }
-
-  stopDrag(pointer) {
-    this.input.on("pointerroots", this.startDrag, this);
-    this.input.off("pointermove", this.doDrag, this);
-    this.input.off("pointerup", this.stopDrag, this);
   }
 }
